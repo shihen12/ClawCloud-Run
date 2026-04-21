@@ -2,24 +2,24 @@ name: ClawCloud 自动登录保活
 
 on:
   schedule:
-    - cron: '0 1 */1 * *' # UTC 1:00，每1天运行
+    - cron: '0 1 */1 * *'
   workflow_dispatch:
 
 jobs:
   auto-login:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
-    # 【修改点】在这里添加环境变量，强制工作流使用 Node.js 24 运行
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
+      # 修改点：使用 main 分支代替 v4
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@main 
 
+      # 修改点：使用 main 分支代替 v5
       - name: 设置 Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@main
         with:
           python-version: '3.11'
 
@@ -37,7 +37,6 @@ jobs:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
           REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
-          
         run: python scripts/auto_login.py
         
       - name: Keepalive Workflow
