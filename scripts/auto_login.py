@@ -23,7 +23,7 @@ from playwright.sync_api import sync_playwright
 PROXY_DSN = os.environ.get("PROXY_DSN", "").strip()
 
 # 固定登录入口，OAuth后会自动跳转到实际区域
-LOGIN_ENTRY_URL = "https://console.run.claw.cloud/login"
+LOGIN_ENTRY_URL = "https://ap-northeast-1.run.claw.cloud/login"
 SIGNIN_URL = f"{LOGIN_ENTRY_URL}/signin"
 DEVICE_VERIFY_WAIT = 30  # Mobile验证 默认等 30 秒
 TWO_FACTOR_WAIT = int(os.environ.get("TWO_FACTOR_WAIT", "120"))  # 2FA验证 默认等 120 秒
@@ -243,7 +243,7 @@ class AutoLogin:
                     return region
             
             # 如果是主域名 console.run.claw.cloud，可能还没跳转
-            if 'console.run.claw.cloud' in host or 'claw.cloud' in host:
+            if host.endswith('.run.claw.cloud') or host.endswith('.console.claw.cloud'):
                 # 尝试从路径或其他地方提取区域信息
                 # 有些平台可能在路径中包含区域，如 /region/ap-southeast-1/...
                 path = parsed.path
