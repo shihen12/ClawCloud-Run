@@ -2,7 +2,7 @@ name: ClawCloud 自动登录保活
 
 on:
   schedule:
-    - cron: '0 1 */1 * *'  # UTC 1:00，每1天运行
+    - cron: '0 1 */1 * *' # UTC 1:00，每1天运行
   workflow_dispatch:
 
 jobs:
@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     
+    # 【修改点】在这里添加环境变量，强制工作流使用 Node.js 24 运行
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -42,5 +46,3 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git commit --allow-empty -m "Chore: Keep-alive [skip ci]"
           git push || echo "No changes to push"
-
-
